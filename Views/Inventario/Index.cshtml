@@ -1,0 +1,16 @@
+@model List<restauranteswebsbasededatos.Models.Sucursal>
+
+<h1>Inventario por Sucursal</h1>
+
+<p>Selecciona una sucursal para ver su inventario:</p>
+
+<ul>
+    @foreach (var sucursal in Model)
+    {
+        <li>
+            <a href="/Inventario/VerInventario/@sucursal.Id">
+                @sucursal.Nombre
+            </a>
+        </li>
+    }
+</ul>

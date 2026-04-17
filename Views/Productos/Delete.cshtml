@@ -1,0 +1,11 @@
+@model restauranteswebsbasededatos.Models.Producto
+
+<h1>Eliminar Producto</h1>
+
+<p>¿Estás seguro de eliminar <strong>@Model.Nombre</strong>?</p>
+
+<form action="/Productos/Delete" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="submit" value="Eliminar" />
+    <a href="/Productos">Cancelar</a>
+</form>

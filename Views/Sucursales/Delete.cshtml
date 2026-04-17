@@ -1,0 +1,11 @@
+@model restauranteswebsbasededatos.Models.Sucursal
+
+<h1>Eliminar Sucursal</h1>
+
+<p>¿Estás seguro de eliminar <strong>@Model.Nombre</strong>?</p>
+
+<form action="/Sucursales/Delete" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="submit" value="Eliminar" />
+    <a href="/Sucursales">Cancelar</a>
+</form>

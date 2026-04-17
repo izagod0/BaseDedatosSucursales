@@ -1,0 +1,23 @@
+@model restauranteswebsbasededatos.Models.Sucursal
+
+<h1>Editar Sucursal</h1>
+
+<form action="/Sucursales/Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div>
+        <label>Nombre:</label>
+        <input name="Nombre" value="@Model.Nombre" />
+    </div>
+    <div>
+        <label>Dirección:</label>
+        <input name="Direccion" value="@Model.Direccion" />
+    </div>
+    <div>
+        <label>Teléfono:</label>
+        <input name="Telefono" value="@Model.Telefono" />
+    </div>
+    <div>
+        <input type="submit" value="Guardar" />
+        <a href="/Sucursales">Cancelar</a>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+@model List<restauranteswebsbasededatos.Models.Inventario>
+
+@{
+    ViewData["Title"] = "Inventario";
+}
+
+<h1>Inventario - @ViewBag.SucursalNombre</h1>
+
+<a href="/Inventario">← Volver a sucursales</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductoNombre</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Precio.ToString("C")</td>
+                <td>@item.Subtotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">Total Inventario:</th>
+            <th>@Model.Sum(x => x.Subtotal).ToString("C")</th>
+        </tr>
+    </tfoot>
+</table>

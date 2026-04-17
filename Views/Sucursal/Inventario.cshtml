@@ -1,0 +1,47 @@
+@model List<restauranteswebsbasededatos.Models.Inventario>
+
+@{
+    ViewData["Title"] = "Inventario - " + ViewBag.SucursalNombre;
+}
+
+<h1>📦 Inventario - @ViewBag.SucursalNombre</h1>
+
+@if (Model == null || Model.Count == 0)
+{
+    <p>No hay productos en el inventario de esta sucursal.</p>
+}
+else
+{
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Fecha Caducidad</th>
+                <th>Estado</th>
+                <th>Valor Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string colorFila = "white";
+                if (item.DiasRestantes <= 0) colorFila = "#ffcccc";
+                else if (item.DiasRestantes <= 7) colorFila = "#ffe6cc";
+                
+                <tr style="background-color: @colorFila;">
+                    <td>@item.ProductoNombre</td>
+                    <td>$@item.Precio</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.FechaCaducidad.ToShortDateString()</td>
+                    <td>@item.Alerta</td>
+                    <td>$@(item.Cantidad * item.Precio)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<br />
+<a href="/Sucursal/Dashboard/@ViewBag.SucursalId">← Volver al Dashboard</a>

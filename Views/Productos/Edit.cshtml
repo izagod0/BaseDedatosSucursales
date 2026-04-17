@@ -1,0 +1,27 @@
+@model restauranteswebsbasededatos.Models.Producto
+
+<h1>Editar Producto</h1>
+
+<form action="/Productos/Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div>
+        <label>Nombre:</label>
+        <input name="Nombre" value="@Model.Nombre" required />
+    </div>
+    <div>
+        <label>Precio:</label>
+        <input name="Precio" type="number" step="0.01" value="@Model.Precio" required />
+    </div>
+    <div>
+        <label>Stock:</label>
+        <input name="Stock" type="number" value="@Model.Stock" required />
+    </div>
+    <div>
+        <label>Fecha de Caducidad:</label>
+        <input name="FechaCaducidad" type="date" value="@Model.FechaCaducidad.ToString("yyyy-MM-dd")" required />
+    </div>
+    <div>
+        <input type="submit" value="Guardar" />
+        <a href="/Productos">Cancelar</a>
+    </div>
+</form>

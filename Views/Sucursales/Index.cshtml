@@ -1,0 +1,32 @@
+@model List<restauranteswebsbasededatos.Models.Sucursal>
+
+<h1>Sucursales</h1>
+
+<a href="/Sucursales/Create">Agregar Sucursal</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Nombre</td>
+                <td>@item.Direccion</td>
+                <td>@item.Telefono</td>
+                <td>
+                    <a href="/Sucursales/Edit/@item.Id">Editar</a>
+                    <a href="/Sucursales/Delete/@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

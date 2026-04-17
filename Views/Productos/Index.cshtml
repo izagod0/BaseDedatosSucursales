@@ -1,0 +1,49 @@
+@model List<restauranteswebsbasededatos.Models.Producto>
+
+<h1>Productos</h1>
+
+<a href="/Productos/Create">Agregar Producto</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Fecha Caducidad</th>
+            <th>Días Restantes</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="background-color:@item.ColorAlerta">
+                <td>@item.Id</td>
+                <td>@item.Nombre</td>
+                <td>@item.Precio</td>
+                <td>@item.Stock</td>
+                <td>@item.FechaCaducidad.ToShortDateString()</td>
+                <td>
+                    @if (item.DiasRestantes <= 0)
+                    {
+                        <span>⚠️ CADUCADO</span>
+                    }
+                    else if (item.DiasRestantes <= 7)
+                    {
+                        <span>⚠️ @item.DiasRestantes días</span>
+                    }
+                    else
+                    {
+                        <span>@item.DiasRestantes días</span>
+                    }
+                </td>
+                <td>
+                    <a href="/Productos/Edit/@item.Id">Editar</a>
+                    <a href="/Productos/Delete/@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

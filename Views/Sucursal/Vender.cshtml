@@ -1,0 +1,34 @@
+@model List<restauranteswebsbasededatos.Models.Inventario>
+
+@{
+    ViewData["Title"] = "Registrar Venta";
+}
+
+<h1>💰 Registrar Venta</h1>
+
+<form action="/Sucursal/Vender" method="post">
+    <input type="hidden" name="sucursalId" value="@ViewBag.SucursalId" />
+    
+    <div>
+        <label>Producto:</label>
+        <select name="productoId" required>
+            <option value="">Selecciona un producto</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.ProductoId">@item.ProductoNombre - $@item.Precio (Stock: @item.Cantidad)</option>
+            }
+        </select>
+    </div>
+    
+    <div>
+        <label>Cantidad a vender:</label>
+        <input type="number" name="cantidad" min="1" required />
+    </div>
+    
+    <div>
+        <input type="submit" value="Registrar Venta" />
+    </div>
+</form>
+
+<br />
+<a href="/Sucursal/Dashboard/@ViewBag.SucursalId">← Volver al Dashboard</a>

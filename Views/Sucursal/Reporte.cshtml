@@ -1,0 +1,46 @@
+@model List<restauranteswebsbasededatos.Models.Venta>
+
+@{
+    ViewData["Title"] = "Reporte - " + ViewBag.SucursalNombre;
+}
+
+<h1>📊 Reporte - @ViewBag.SucursalNombre</h1>
+
+<div style="display: flex; gap: 20px; margin-bottom: 30px;">
+    <div style="border: 1px solid #28a745; border-radius: 10px; padding: 15px; background-color: #d4edda;">
+        <h3>💰 Total en Ventas</h3>
+        <h2>$@ViewBag.TotalVentas</h2>
+    </div>
+    
+    <div style="border: 1px solid #007bff; border-radius: 10px; padding: 15px; background-color: #cce5ff;">
+        <h3>📦 Valor del Inventario</h3>
+        <h2>$@ViewBag.ValorInventario</h2>
+    </div>
+</div>
+
+<h3>Últimas Ventas</h3>
+
+<table border="1" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var venta in Model)
+        {
+            <tr>
+                <td>@venta.ProductoNombre</td>
+                <td>@venta.Cantidad</td>
+                <td>$@venta.Total</td>
+                <td>@venta.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<a href="/Sucursal/Dashboard/@ViewBag.SucursalId">← Volver al Dashboard</a>
