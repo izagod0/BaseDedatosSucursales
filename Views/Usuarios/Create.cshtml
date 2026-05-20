@@ -1,0 +1,46 @@
+@model restauranteswebsbasededatos.Models.Usuario
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<h1>➕ Crear Usuario</h1>
+
+<form method="post">
+    <div>
+        <label>Nombre:</label>
+        <input asp-for="Nombre" required />
+    </div>
+    <div>
+        <label>Email:</label>
+        <input asp-for="Email" type="email" required />
+    </div>
+    <div>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required />
+    </div>
+    <div>
+        <label>Rol:</label>
+        <select asp-for="RolId" required>
+            <option value="">Seleccionar</option>
+            @foreach (var rol in ViewBag.Roles)
+            {
+                <option value="@rol.Id">@rol.Nombre</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Sucursal (solo para Cajeros):</label>
+        <select asp-for="SucursalId">
+            <option value="">Ninguna</option>
+            @foreach (var suc in ViewBag.Sucursales)
+            {
+                <option value="@suc.Id">@suc.Nombre</option>
+            }
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Guardar" />
+        <a href="/Usuarios">Cancelar</a>
+    </div>
+</form>

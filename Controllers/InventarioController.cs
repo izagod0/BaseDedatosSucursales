@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using restauranteswebsbasededatos.Models;
+using restauranteswebsbasededatos.Helpers;
 using System.Collections.Generic;
 
 namespace restauranteswebsbasededatos.Controllers
 {
+    [AuthorizeHelper("Gerente")]
     public class InventarioController : Controller
     {
         private string connectionString = "server=localhost;port=3305;user=root;password=12345;database=restaurante_mysql;";

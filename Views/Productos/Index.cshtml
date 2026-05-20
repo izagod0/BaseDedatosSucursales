@@ -1,49 +1,174 @@
 @model List<restauranteswebsbasededatos.Models.Producto>
 
-<h1>Productos</h1>
+@{
+    ViewData["Title"] = "Productos";
+}
 
-<a href="/Productos/Create">Agregar Producto</a>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: #0f0f0f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+    .header {
+        background: #1e1e2e;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 1px solid #2a2a3e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header h1 {
+        color: #fff;
+        font-size: 28px;
+    }
+    .btn-primary {
+        background: #7c3aed;
+        color: white;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+    .btn-primary:hover {
+        background: #6d28d9;
+    }
+    .btn-edit {
+        background: #3b82f6;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    .btn-delete {
+        background: #dc2626;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+    table {
+        width: 100%;
+        background: #1e1e2e;
+        border-radius: 15px;
+        overflow: hidden;
+        border-collapse: collapse;
+    }
+    th {
+        background: #2a2a3e;
+        color: #fff;
+        padding: 15px;
+        text-align: left;
+    }
+    td {
+        padding: 12px 15px;
+        color: #bbb;
+        border-bottom: 1px solid #2a2a3e;
+    }
+    tr:hover {
+        background: #252536;
+    }
+    .status-red {
+        background: #dc2626;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        color: white;
+        display: inline-block;
+    }
+    .status-orange {
+        background: #ea580c;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        color: white;
+        display: inline-block;
+    }
+    .status-green {
+        background: #10b981;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        color: white;
+        display: inline-block;
+    }
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #888;
+        text-decoration: none;
+    }
+</style>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Fecha Caducidad</th>
-            <th>Días Restantes</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr style="background-color:@item.ColorAlerta">
-                <td>@item.Id</td>
-                <td>@item.Nombre</td>
-                <td>@item.Precio</td>
-                <td>@item.Stock</td>
-                <td>@item.FechaCaducidad.ToShortDateString()</td>
-                <td>
-                    @if (item.DiasRestantes <= 0)
-                    {
-                        <span>⚠️ CADUCADO</span>
-                    }
-                    else if (item.DiasRestantes <= 7)
-                    {
-                        <span>⚠️ @item.DiasRestantes días</span>
-                    }
-                    else
-                    {
-                        <span>@item.DiasRestantes días</span>
-                    }
-                </td>
-                <td>
-                    <a href="/Productos/Edit/@item.Id">Editar</a>
-                    <a href="/Productos/Delete/@item.Id">Eliminar</a>
-                </td>
+<div class="container">
+    <div class="header">
+        <h1>🍔 Productos</h1>
+        <a href="/Productos/Create" class="btn-primary">+ Nuevo Producto</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Fecha Caducidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string estado = "";
+                string clase = "";
+                if (item.DiasRestantes <= 0)
+                {
+                    estado = "CADUCADO";
+                    clase = "status-red";
+                }
+                else if (item.DiasRestantes <= 7)
+                {
+                    estado = $"CADUCA EN {item.DiasRestantes} DÍAS";
+                    clase = "status-orange";
+                }
+                else
+                {
+                    estado = "VIGENTE";
+                    clase = "status-green";
+                }
+
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>$@item.Precio</td>
+                    <td>@item.Stock</td>
+                    <td>@item.FechaCaducidad.ToShortDateString()</td>
+                    <td><span class="@clase">@estado</span></td>
+                    <td>
+                        <a href="/Productos/Edit/@item.Id" class="btn-edit">Editar</a>
+                        <a href="/Productos/Delete/@item.Id" class="btn-delete">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+    <a href="/Gerente/Dashboard/@Context.Session.GetInt32("UsuarioSucursalId")" class="back-link">← Volver al Dashboard</a>
+</div>

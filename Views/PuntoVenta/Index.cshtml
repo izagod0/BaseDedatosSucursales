@@ -1,0 +1,196 @@
+@{
+    ViewData["Title"] = "Punto de Venta";
+    var sucursalId = Context.Session.GetInt32("UsuarioSucursalId") ?? 0;
+    var usuarioNombre = Context.Session.GetString("UsuarioNombre");
+}
+
+<style>
+    .venta-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .productos-lista, .carrito {
+        background: #1e1e2e;
+        border-radius: 15px;
+        padding: 20px;
+    }
+    .producto-item {
+        background: #2a2a3e;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .producto-item button {
+        background: #7c3aed;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+    }
+    .carrito-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #2a2a3e;
+    }
+    .total {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #7c3aed;
+        text-align: right;
+        font-size: 24px;
+        color: #7c3aed;
+    }
+    .btn-vender {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+        width: 100%;
+    }
+</style>
+
+<div class="header">
+    <h1>💰 Punto de Venta</h1>
+    <p>👤 Cajero: @usuarioNombre</p>
+    <p>📍 Sucursal ID: @sucursalId</p>
+</div>
+
+<div class="venta-container">
+    <!-- Productos -->
+    <div class="productos-lista">
+        <h3 style="color: #fff;">📋 Productos</h3>
+        <div id="listaProductos">
+            <p style="color: #888;">Cargando productos...</p>
+        </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="carrito">
+        <h3 style="color: #fff;">🛒 Carrito</h3>
+        <div id="carritoItems">
+            <p style="color: #888;">No hay productos</p>
+        </div>
+        <div class="total">
+            Total: $<span id="totalCarrito">0</span>
+        </div>
+        <button class="btn-vender" onclick="realizarVenta()">✅ Realizar Venta</button>
+    </div>
+</div>
+
+<br />
+<a href="/Login/Logout" class="btn-back">🚪 Cerrar Sesión</a>
+
+<script>
+    let carrito = [];
+    let productos = [];
+
+    // Cargar productos al iniciar
+    fetch('/PuntoVenta/GetProductos')
+        .then(response => response.json())
+        .then(data => {
+            productos = data;
+            actualizarListaProductos();
+        });
+
+    function actualizarListaProductos() {
+        let container = document.getElementById("listaProductos");
+        if (productos.length === 0) {
+            container.innerHTML = '<p style="color: #888;">No hay productos disponibles</p>';
+            return;
+        }
+        container.innerHTML = "";
+        productos.forEach(p => {
+            container.innerHTML += `
+                <div class="producto-item">
+                    <div>
+                        <strong style="color:#fff;">${p.nombre}</strong><br />
+                        <span style="color:#888;">$${p.precio} | Stock: ${p.stock}</span>
+                    </div>
+                    <button onclick="agregarAlCarrito(${p.id}, '${p.nombre}', ${p.precio})">Agregar</button>
+                </div>
+            `;
+        });
+    }
+
+    function agregarAlCarrito(id, nombre, precio) {
+        let existente = carrito.find(p => p.id === id);
+        if (existente) {
+            existente.cantidad++;
+        } else {
+            carrito.push({ id: id, nombre: nombre, precio: precio, cantidad: 1 });
+        }
+        actualizarCarrito();
+    }
+
+    function eliminarDelCarrito(id) {
+        carrito = carrito.filter(p => p.id !== id);
+        actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+        let container = document.getElementById("carritoItems");
+        let total = 0;
+        
+        if (carrito.length === 0) {
+            container.innerHTML = '<p style="color: #888;">No hay productos</p>';
+        } else {
+            container.innerHTML = "";
+            carrito.forEach(item => {
+                total += item.precio * item.cantidad;
+                container.innerHTML += `
+                    <div class="carrito-item">
+                        <div>
+                            <strong style="color:#fff;">${item.nombre}</strong><br />
+                            <span style="color:#888;">$${item.precio} x ${item.cantidad}</span>
+                        </div>
+                        <div>
+                            <span style="color:#7c3aed;">$${(item.precio * item.cantidad)}</span>
+                            <button onclick="eliminarDelCarrito(${item.id})" style="background:#dc2626; border:none; padding:5px 10px; border-radius:5px; color:white; margin-left:10px;">X</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById("totalCarrito").innerText = total;
+    }
+
+    function realizarVenta() {
+        if (carrito.length === 0) {
+            alert("No hay productos en el carrito");
+            return;
+        }
+        
+        fetch('/PuntoVenta/RealizarVenta', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: carrito, sucursalId: @sucursalId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Venta realizada. Total: $" + data.total);
+                carrito = [];
+                actualizarCarrito();
+                // Recargar productos
+                fetch('/PuntoVenta/GetProductos')
+                    .then(response => response.json())
+                    .then(data => {
+                        productos = data;
+                        actualizarListaProductos();
+                    });
+            } else {
+                alert("Error: " + data.message);
+            }
+        });
+    }
+</script>

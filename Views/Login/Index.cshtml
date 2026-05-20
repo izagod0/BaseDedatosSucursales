@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .login-container {
+        background: #1e1e2e;
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        border: 1px solid #2a2a3e;
+    }
+
+    .login-container h1 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+
+    .login-container h2 {
+        color: #888;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        display: block;
+        color: #bbb;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        background: #2a2a3e;
+        border: 1px solid #3a3a4e;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: #7c3aed;
+        background: #2f2f44;
+    }
+
+    .error-message {
+        background: rgba(220, 38, 38, 0.2);
+        border: 1px solid #dc2626;
+        color: #f87171;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #7c3aed;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    button:hover {
+        background: #6d28d9;
+        transform: translateY(-2px);
+    }
+
+    .version {
+        text-align: center;
+        margin-top: 20px;
+        color: #555;
+        font-size: 12px;
+    }
+</style>
+
+<div class="login-container">
+    <h1>🔐 Sistema Restaurante</h1>
+    <h2>Iniciar Sesión</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="error-message">@ViewBag.Error</div>
+    }
+
+    <form method="post">
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" required />
+        </div>
+        <div class="input-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" required />
+        </div>
+        <button type="submit">Ingresar</button>
+    </form>
+    <div class="version">v1.0 - Sistema de Inventario</div>
+</div>

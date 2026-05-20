@@ -1,37 +1,86 @@
 @model List<restauranteswebsbasededatos.Models.Inventario>
 
 @{
-    ViewData["Title"] = "Inventario";
+    ViewData["Title"] = "Inventario - " + ViewBag.SucursalNombre;
+    var sucursalId = ViewBag.SucursalId ?? 0;
 }
 
-<h1>Inventario - @ViewBag.SucursalNombre</h1>
+<div class="header">
+    <h1>📦 Inventario - @ViewBag.SucursalNombre</h1>
+    <p>Lista de productos y stock disponible</p>
+</div>
 
-<a href="/Inventario">← Volver a sucursales</a>
+@if (Model.Count == 0)
+{
+    <p style="color: #888;">No hay productos en el inventario de esta sucursal.</p>
+}
+else
+{
+    decimal totalInventario = 0;
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.ProductoNombre</td>
-                <td>@item.Cantidad</td>
-                <td>@item.Precio.ToString("C")</td>
-                <td>@item.Subtotal.ToString("C")</td>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Fecha Caducidad</th>
+                <th>Estado</th>
+                <th>Subtotal</th>
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <th colspan="3">Total Inventario:</th>
-            <th>@Model.Sum(x => x.Subtotal).ToString("C")</th>
-        </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string estado = "";
+                string clase = "";
+                if (item.DiasRestantes <= 0)
+                {
+                    estado = "CADUCADO";
+                    clase = "status-red";
+                }
+                else if (item.DiasRestantes <= 7)
+                {
+                    estado = "CADUCA EN " + item.DiasRestantes + " DÍAS";
+                    clase = "status-orange";
+                }
+                else
+                {
+                    estado = "VIGENTE";
+                    clase = "status-green";
+                }
+                decimal subtotal = item.Cantidad * item.Precio;
+                totalInventario += subtotal;
+
+                <tr>
+                    <td>@item.ProductoNombre</td>
+                    <td>$@item.Precio</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.FechaCaducidad.ToShortDateString()</td>
+                    <td><span class="@clase">@estado</span></td>
+                    <td>$@subtotal</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="background: #1e1e2e; border-radius: 15px; padding: 20px; margin-top: 20px; text-align: right;">
+        <h3 style="color: #fff;">💰 Valor Total del Inventario</h3>
+        <span style="color: #7c3aed; font-size: 24px;">$@totalInventario</span>
+    </div>
+}
+
+<br />
+<a href="/Inventario" class="btn-back">← Volver a sucursales</a>
+
+@{
+    var rol = Context.Session.GetString("UsuarioRol");
+    if (rol == "Gerente")
+    {
+        <a href="/Gerente/Dashboard/@Context.Session.GetInt32("UsuarioSucursalId")" class="btn-back">← Volver al Dashboard</a>
+    }
+    else
+    {
+        <a href="/PuntoVenta" class="btn-back">← Volver al Punto de Venta</a>
+    }
+}

@@ -1,0 +1,145 @@
+@model List<restauranteswebsbasededatos.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: #0f0f0f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+    .header {
+        background: #1e1e2e;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 1px solid #2a2a3e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header h1 {
+        color: #fff;
+        font-size: 28px;
+    }
+    .btn-primary {
+        background: #7c3aed;
+        color: white;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+    .btn-primary:hover {
+        background: #6d28d9;
+    }
+    .btn-edit {
+        background: #3b82f6;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    .btn-delete {
+        background: #dc2626;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+    table {
+        width: 100%;
+        background: #1e1e2e;
+        border-radius: 15px;
+        overflow: hidden;
+        border-collapse: collapse;
+    }
+    th {
+        background: #2a2a3e;
+        color: #fff;
+        padding: 15px;
+        text-align: left;
+    }
+    td {
+        padding: 12px 15px;
+        color: #bbb;
+        border-bottom: 1px solid #2a2a3e;
+    }
+    tr:hover {
+        background: #252536;
+    }
+    .badge {
+        background: #7c3aed;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        color: white;
+        display: inline-block;
+    }
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #888;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>👥 Gestión de Usuarios</h1>
+        <a href="/Usuarios/Create" class="btn-primary">+ Nuevo Usuario</a>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <p style="color: #888;">No hay usuarios registrados.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Sucursal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.Id</td>
+                        <td>@u.Nombre</td>
+                        <td>@u.Email</td>
+                        <td><span class="badge">@u.RolNombre</span></td>
+                        <td>@(string.IsNullOrEmpty(u.SucursalNombre) ? "Ninguna" : u.SucursalNombre)</td>
+                        <td>
+                            <a href="/Usuarios/Edit/@u.Id" class="btn-edit">Editar</a>
+                            <a href="/Usuarios/Delete/@u.Id" class="btn-delete" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <br />
+    <a href="/Gerente/Dashboard/@Context.Session.GetInt32("UsuarioSucursalId")" class="back-link">← Volver al Dashboard</a>
+</div>

@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Dashboard - Gerente";
+}
+
+<div class="header">
+    <h1>Bienvenido, @ViewBag.UsuarioNombre</h1>
+    <p>Panel de Control - Gerente</p>
+    <div style="color: #7c3aed;">📍 Sucursal seleccionada ID: @ViewBag.SucursalId</div>
+</div>
+
+<div class="cards-grid">
+    <div class="card">
+        <div class="card-icon">💰</div>
+        <h3>Punto de Venta</h3>
+        <p>Registrar ventas</p>
+        <a href="/Gerente/PuntoVenta">Ir al Punto de Venta →</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">📦</div>
+        <h3>Inventario</h3>
+        <p>Gestiona el stock de productos</p>
+        <a href="/Sucursal/Inventario/@ViewBag.SucursalId">Ver Inventario →</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">🍔</div>
+        <h3>Productos</h3>
+        <p>Administra catálogo de productos</p>
+        <a href="/Productos">Gestionar →</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">👥</div>
+        <h3>Usuarios</h3>
+        <p>Gestiona empleados y roles</p>
+        <a href="/Usuarios">Gestionar →</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Reportes</h3>
+        <p>Analiza ventas e inventario</p>
+        <a href="/Sucursal/Reporte/@ViewBag.SucursalId">Ver Reportes →</a>
+    </div>
+    <div class="card">
+        <div class="card-icon">🔄</div>
+        <h3>Cambiar Sucursal</h3>
+        <p>Selecciona otra sucursal</p>
+        <a href="/Gerente/SeleccionarSucursal">Cambiar →</a>
+    </div>
+</div>
+
+<a href="/Login/Logout" class="logout-btn">🚪 Cerrar Sesión</a>

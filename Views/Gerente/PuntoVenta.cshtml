@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Punto de Venta";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: #0f0f0f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        background: #1e1e2e;
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        border: 1px solid #2a2a3e;
+    }
+    .icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+    h1 {
+        color: #fff;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    .info-card {
+        background: #2a2a3e;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    .info-card p {
+        color: #bbb;
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    .info-card strong {
+        color: #7c3aed;
+    }
+    .btn-back {
+        display: inline-block;
+        padding: 12px 25px;
+        background: #7c3aed;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        margin-top: 20px;
+        transition: all 0.3s;
+    }
+    .btn-back:hover {
+        background: #6d28d9;
+    }
+    .alert {
+        color: #fbbf24;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="container">
+    <div class="icon">💰</div>
+    <h1>Punto de Venta</h1>
+
+    <div class="info-card">
+        <p>👤 Cajero: <strong>@ViewBag.UsuarioNombre</strong></p>
+        <p>📍 Sucursal ID: <strong>@ViewBag.SucursalId</strong></p>
+    </div>
+
+    <p style="color: #888;">Aquí irá el formulario de venta</p>
+
+    <a href="/Gerente/Dashboard/@ViewBag.SucursalId" class="btn-back">← Volver al Dashboard</a>
+    <div class="alert">⚡ Sistema de inventario en tiempo real</div>
+</div>

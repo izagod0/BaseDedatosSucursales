@@ -1,16 +1,30 @@
 @model List<restauranteswebsbasededatos.Models.Sucursal>
 
-<h1>Inventario por Sucursal</h1>
+@{
+    ViewData["Title"] = "Seleccionar Sucursal";
+    var sucursalId = Context.Session.GetInt32("UsuarioSucursalId") ?? 0;
+}
 
-<p>Selecciona una sucursal para ver su inventario:</p>
+<!-- el resto del estilo igual que antes -->
 
-<ul>
-    @foreach (var sucursal in Model)
-    {
-        <li>
-            <a href="/Inventario/VerInventario/@sucursal.Id">
-                @sucursal.Nombre
-            </a>
-        </li>
-    }
-</ul>
+<div class="container">
+    <div class="header">
+        <h1>📦 Inventario</h1>
+        <p>Selecciona una sucursal para ver su inventario</p>
+    </div>
+
+    <div class="cards-grid">
+        @foreach (var sucursal in Model)
+        {
+            <div class="card">
+                <div class="card-icon">🏢</div>
+                <h3>@sucursal.Nombre</h3>
+                <p>@sucursal.Direccion</p>
+                <a href="/Inventario/VerInventario/@sucursal.Id">Ver Inventario →</a>
+            </div>
+        }
+    </div>
+
+    <br />
+    <a href="/Gerente/Dashboard/@sucursalId" class="back-link">← Volver al Dashboard del Gerente</a>
+</div>

@@ -1,0 +1,62 @@
+@model restauranteswebsbasededatos.Models.Usuario
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h1>✏️ Editar Usuario</h1>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    
+    <div>
+        <label>Nombre:</label><br />
+        <input type="text" name="nombre" value="@Model.Nombre" required />
+    </div>
+    
+    <div>
+        <label>Email:</label><br />
+        <input type="email" name="email" value="@Model.Email" required />
+    </div>
+    
+    <div>
+        <label>Rol:</label><br />
+        <select name="rolId" required>
+            <option value="">Seleccionar</option>
+            @foreach (var rol in ViewBag.Roles)
+            {
+                if (rol.Id == Model.RolId)
+                {
+                    <option value="@rol.Id" selected>@rol.Nombre</option>
+                }
+                else
+                {
+                    <option value="@rol.Id">@rol.Nombre</option>
+                }
+            }
+        </select>
+    </div>
+    
+    <div>
+        <label>Sucursal (solo para Cajeros):</label><br />
+        <select name="sucursalId">
+            <option value="">Ninguna</option>
+            @foreach (var suc in ViewBag.Sucursales)
+            {
+                if (suc.Id == Model.SucursalId)
+                {
+                    <option value="@suc.Id" selected>@suc.Nombre</option>
+                }
+                else
+                {
+                    <option value="@suc.Id">@suc.Nombre</option>
+                }
+            }
+        </select>
+    </div>
+    
+    <div style="margin-top:15px;">
+        <input type="submit" value="Guardar" />
+        <a href="/Usuarios">Cancelar</a>
+    </div>
+</form>
